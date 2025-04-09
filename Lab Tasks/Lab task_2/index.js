@@ -109,4 +109,66 @@ liveddropdown.addEventListener("mouseenter", () => {
   liveddropdown.classList.add("show");
 });
 
+document.getElementById("checkout-form").addEventListener("submit", function(event) {
+  event.preventDefault(); // Prevent actual form submission
+
+  const fullName = document.getElementById("fullName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const phoneInput = document.getElementById("phone").value.trim();
+  const cardNumber = document.getElementById("cardNumber").value.trim();
+  const expiryDate = document.getElementById("expiryDate").value.trim();
+  const cvv = document.getElementById("cvv").value.trim();
+  const message = document.getElementById("checkout-message");
+
+  // Basic validations
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const cardPattern = /^\d{16}$/;
+  const expiryPattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+  const cvvPattern = /^\d{3,4}$/;
+  const phonePattern = /^[0-9]{11}$/;
+
+  if (!fullName || !email || !address || !cardNumber || !expiryDate || !cvv) {
+    message.textContent = "Please fill in all required fields.";
+    message.style.color = "red";
+    return;
+  }
+
+  if (!emailPattern.test(email)) {
+    message.textContent = "Invalid email format.";
+    message.style.color = "red";
+    return;
+  }
+
+  if (!phonePattern.test(phoneInput)) {
+    alert("Please enter a valid 10-digit phone number.");
+    return;
+  }
+
+  if (!cardPattern.test(cardNumber)) {
+    message.textContent = "Card number must be 16 digits.";
+    message.style.color = "red";
+    return;
+  }
+
+  if (!expiryPattern.test(expiryDate)) {
+    message.textContent = "Expiry date must be in MM/YY format.";
+    message.style.color = "red";
+    return;
+  }
+
+  if (!cvvPattern.test(cvv)) {
+    message.textContent = "CVV must be 3 or 4 digits.";
+    message.style.color = "red";
+    return;
+  }
+
+  // All validations passed
+  message.textContent = "Order placed successfully!";
+  message.style.color = "green";
+
+  // Optionally clear the form
+  document.getElementById("checkout-form").reset();
+});
+
 
