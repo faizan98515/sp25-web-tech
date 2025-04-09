@@ -4,7 +4,6 @@ const nav = document.getElementById("nav-bkg");
 
 menLink.addEventListener("mouseenter", () => {
   dropdown.classList.add("show");
-  // drop-column.classList.add("trans");
   nav.style.backgroundColor = "#e9e9e9";
 });
 

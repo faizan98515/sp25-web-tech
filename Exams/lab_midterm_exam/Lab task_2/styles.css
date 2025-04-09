@@ -88,7 +88,7 @@ body {
 }
 
 .dropdown {
-  display: none;
+  visibility: hidden;
   position:absolute;
   font-family: Arial, sans-serif;
   color: #333;
@@ -99,12 +99,12 @@ body {
   width: 100vw;
   z-index: 1000;
   opacity: 0;
-  /* transform: translateY(20px); */
-  /* transition: all 0.3s ease-in-out; */
+  transform: translateY(20px); 
+  transition: all 0.3s ease-in-out;
 }
 
 .show {
-  display: block;
+  visibility: visible;
   opacity: 1;
   transform: translateY(0);
 }
