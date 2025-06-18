@@ -1,0 +1,205 @@
+<% /* views/my-orders.ejs */ %>
+<div class="my-orders-wrapper">
+    <h1 class="page-title">My Orders</h1>
+
+    <% if (success_msg && success_msg.length > 0) { %>
+        <div class="flash-messages">
+            <div class="alert success"><%= success_msg %></div>
+        </div>
+    <% } %>
+    <% if (error_msg && error_msg.length > 0) { %>
+        <div class="flash-messages">
+            <div class="alert error"><%= error_msg %></div>
+        </div>
+    <% } %>
+
+    <% if (orders.length === 0) { %>
+        <p class="empty-orders-message">You have not placed any orders yet. <a href="/products">Start shopping!</a></p>
+    <% } else { %>
+        <div class="orders-list">
+            <% orders.forEach(order => { %>
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-number"><%= order._id %></span>
+                        <span class="order-status <%= order.status.toLowerCase().replace(/\s/g, '-').replace(/\(/g, '').replace(/\)/g, '') %>">
+                            <%= order.status %>
+                        </span>
+                    </div>
+                    <p class="order-date">Ordered on: <%= order.createdAt.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                    <p class="order-total">Total: <strong>Rs.<%= order.totalAmount.toFixed(2) %></strong></p>
+
+                    <div class="order-items-summary">
+                        <h4>Items:</h4>
+                        <ul>
+                            <% order.items.forEach(item => { %>
+                                <li>
+                                    <img src="<%= item.imageUrl %>" alt="<%= item.name %>" class="order-item-thumbnail">
+                                    <span><%= item.name %> x <%= item.quantity %></span>
+                                    <span>Rs.<%= item.total.toFixed(2) %></span>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                    <div class="customer-details">
+                        <h4>Delivery Details:</h4>
+                        <p><strong>Name:</strong> <%= order.customerDetails.name %></p>
+                        <p><strong>Phone:</strong> <%= order.customerDetails.phone %></p>
+                        <p><strong>Address:</strong> <%= order.customerDetails.address %></p>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+</div>
+
+<style>
+    body {
+        background: #f6f6f6;
+    }
+    .my-orders-wrapper {
+        max-width: 1200px;
+        margin: 40px auto 0 auto;
+        padding: 0 25px;
+    }
+    .page-title, h1 {
+        font-size: 2.6em;
+        font-weight: 700;
+        color: #181818;
+        margin-bottom: 18px;
+        letter-spacing: -0.5px;
+        text-align: center;
+    }
+    .orders-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+        gap: 32px;
+        margin-top: 32px;
+    }
+    .order-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        padding: 32px 36px;
+        margin-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+    .order-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .order-number {
+        font-size: 0.92em;
+        font-weight: 400;
+        color: #888;
+        letter-spacing: 0.5px;
+        margin-right: 10px;
+        word-break: break-all;
+    }
+    .order-status {
+        font-size: 0.95em;
+        font-weight: 600;
+        color: #fff;
+        background: #1aaf3c;
+        border-radius: 6px;
+        padding: 3px 12px;
+        margin-left: 8px;
+    }
+    .order-date {
+        font-size: 1em;
+        color: #888;
+        font-weight: 400;
+        margin-bottom: 6px;
+    }
+    .order-total {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #181818;
+        margin-bottom: 10px;
+    }
+    .order-items-summary {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        padding: 12px 0;
+    }
+    .order-items-summary h4 {
+        font-size: 1.1em;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #222;
+    }
+    .order-items-summary ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .order-items-summary ul li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+        font-size: 1em;
+        color: #222;
+    }
+    .order-item-thumbnail {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        border-radius: 8px;
+        background: #f6f6f6;
+        border: 1px solid #eee;
+    }
+    .order-items-summary ul li span:first-of-type {
+        font-weight: 600;
+        color: #181818;
+        font-size: 1.05em;
+        margin-right: 8px;
+    }
+    .order-items-summary ul li span:last-of-type {
+        margin-left: auto;
+        font-weight: 600;
+        color: #181818;
+    }
+    .delivery-details {
+        margin-top: 10px;
+        font-size: 1em;
+        color: #222;
+    }
+    .delivery-details strong {
+        font-weight: 700;
+        color: #181818;
+    }
+    .view-details-btn {
+        display: inline-block;
+        margin-top: 10px;
+        background: #000;
+        color: #fff;
+        border: none;
+        border-radius: 0;
+        padding: 8px 22px;
+        font-size: 1em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+        box-shadow: none;
+        text-decoration: none;
+    }
+    .view-details-btn:hover {
+        background: #222;
+        color: #fff;
+    }
+    @media (max-width: 900px) {
+        .orders-list {
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        .order-card {
+            padding: 20px 8px;
+        }
+    }
+</style>

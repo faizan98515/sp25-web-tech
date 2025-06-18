@@ -1,0 +1,59 @@
+<% /* views/admin/products.ejs */ %>
+<% title = 'Product Management' %>
+<% headerText = 'Product Management' %>
+<% activePage = 'products' %>
+
+<div class="admin-section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>All Products</h2>
+        <a href="/admin/products/add" class="btn btn-primary">Add New Product</a>
+    </div>
+
+    <% if (products.length === 0) { %>
+        <p class="text-muted">No products found. Add some!</p>
+    <% } else { %>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover admin-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Original Price</th>
+                        <th>Discounted Price</th>
+                        <th>Status</th>
+                        <th>Colors</th>
+                        <th>Quantity</th> <% /* NEW COLUMN */ %>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% products.forEach(product => { %>
+                        <tr>
+                            <td><img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="img-fluid"></td>
+                            <td><%= product.name %></td>
+                            <td><%= product.originalPrice || 'N/A' %></td>
+                            <td><%= product.discountedPrice %></td>
+                            <td><%= product.status || 'N/A' %></td>
+                            <td>
+                                <% if (product.colors && product.colors.length > 0) { %>
+                                    <% product.colors.forEach(color => { %>
+                                        <span class="color-swatch-admin" style="background-color: <%= color %>; border: 1px solid #ccc; display: inline-block; width: 20px; height: 20px; border-radius: 50%;"></span>
+                                    <% }); %>
+                                <% } else { %>
+                                    N/A
+                                <% } %>
+                            </td>
+                            <td><%= product.quantity %></td> <% /* NEW DATA DISPLAY */ %>
+                            <td>
+                                <a href="/admin/products/edit/<%= product._id %>" class="btn btn-warning btn-sm btn-action">Edit</a>
+                                <form action="/admin/products/delete/<%= product._id %>" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                    <button type="submit" class="btn btn-danger btn-sm btn-action">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+</div>

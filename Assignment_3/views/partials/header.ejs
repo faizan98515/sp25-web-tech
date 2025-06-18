@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary navbar-custom">
+  <div class="container-fluid" id="nav-bkg">
+    <a class="navbar-brand" href="/">
+      <img src="/finisterre-logo.svg" alt="Finisterre logo" />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <% if (user) { %>
+          <li><a href="/orders">My Orders</a></li>
+          <li><a href="/complaints/contact">Contact Us</a></li>
+          <li><a href="/logout">Logout</a></li>
+        <% } else { %>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/register">Register</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav> 

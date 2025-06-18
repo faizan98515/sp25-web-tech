@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Register - Finisterre</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: url("/Sale_June_HP_V1_Desktop_1500x.webp") no-repeat center
+          center fixed;
+        background-size: cover;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .register-container {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px);
+      }
+
+      .register-box {
+        background-color: rgba(255, 255, 255, 0.92);
+        padding: 30px;
+        border-radius: 12px;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .logo {
+        width: 150px;
+        margin-bottom: 15px;
+      }
+
+      h2 {
+        margin-bottom: 25px;
+        font-weight: 600;
+      }
+
+      .btn-register {
+        background-color: #e5d9b6;
+        color: #000;
+      }
+
+      .btn-register:hover {
+        background-color: #d4c398;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-container">
+      <div class="register-box">
+        <!-- Logo at top -->
+        <img src="finisterre-logo.svg" alt="Logo" class="logo" />
+
+        <h2>Register</h2>
+
+        <% if (error_msg) { %>
+        <div class="alert alert-danger"><%= error_msg %></div>
+        <% } %> <% if (success_msg) { %>
+        <div class="alert alert-success"><%= success_msg %></div>
+        <% } %>
+
+        <form action="/register" method="POST">
+          <div class="mb-3 text-start">
+            <label for="username" class="form-label">Set a Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3 text-start">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="mb-3 text-start">
+            <label for="confirmPassword" class="form-label"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              class="form-control"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-register w-100">Register</button>
+        </form>
+
+        <p class="mt-3">
+          Already have an account? <a href="/login">Login here</a>
+        </p>
+      </div>
+    </div>
+    <script>
+      document.querySelector("form").addEventListener("submit", function (e) {
+        const pw = document.getElementById("password").value;
+        const cpw = document.getElementById("confirmPassword").value;
+        if (pw !== cpw) {
+          alert("Passwords do not match!");
+          e.preventDefault(); // Stop form submission
+        }
+      });
+    </script>
+  </body>
+</html>

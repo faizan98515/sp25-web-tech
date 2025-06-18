@@ -1,0 +1,39 @@
+<% /* views/admin/add-product.ejs */ %>
+<% title = 'Add New Product' %>
+<% headerText = 'Add New Product' %>
+<% activePage = 'products' %>
+
+<div class="admin-section">
+    <form action="/admin/products/add" method="POST">
+        <div class="form-group">
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">Image URL:</label>
+            <input type="text" id="imageUrl" name="imageUrl" class="form-control" required placeholder="/images/imageX.webp">
+        </div>
+        <div class="form-group">
+            <label for="originalPrice">Original Price (e.g., Rs.50,000.00):</label>
+            <input type="text" id="originalPrice" name="originalPrice" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="discountedPrice">Discounted Price (e.g., Rs.35,000.00):</label>
+            <input type="text" id="discountedPrice" name="discountedPrice" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="status">Status (e.g., New Lines Added, Sale):</label>
+            <input type="text" id="status" name="status" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="colors">Colors (comma-separated, e.g., #FF0000,blue,black):</label>
+            <input type="text" id="colors" name="colors" class="form-control" placeholder="Hex codes or common names">
+        </div>
+        <div class="form-group"> <% /* NEW: Quantity Input */ %>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" class="form-control" min="0" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Product</button>
+        <a href="/admin/products" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

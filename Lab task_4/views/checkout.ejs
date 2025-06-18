@@ -1,0 +1,204 @@
+<% /* views/checkout.ejs Displays cart summary, collects user details, and
+allows placing order. */ %>
+
+<div class="checkout-page-wrapper">
+  <h1 class="page-title">Checkout</h1>
+
+  <% /* Flash Messages Display */ %> <% /* Check if success_msg exists and has
+  content */ %> <% if (success_msg && success_msg.length > 0) { %>
+  <div class="flash-messages">
+    <div class="alert success"><%= success_msg %></div>
+  </div>
+  <% } %> <% /* Check if error_msg exists and has content */ %> <% if (error_msg
+  && error_msg.length > 0) { %>
+  <div class="flash-messages">
+    <div class="alert error"><%= error_msg %></div>
+  </div>
+  <% } %>
+
+  <div class="checkout-container">
+    <div class="cart-summary-checkout">
+      <h2>Order Summary</h2>
+      <% if (cartItems.length === 0) { %>
+      <p>Your cart is empty.</p>
+      <% } else { %>
+      <ul>
+        <% cartItems.forEach(item => { %>
+        <li style="display: flex; align-items: center; gap: 12px;">
+          <img src="<%= item.imageUrl %>" alt="<%= item.name %>" class="order-summary-img">
+          <span class="product-name"><%= item.name %></span>
+          <span style="margin-left:auto;">Rs.<%= item.price.toFixed(2) %> x <%= item.quantity %></span>
+        </li>
+        <% }); %>
+      </ul>
+      <div class="total-price-checkout">
+        <strong>Total:</strong>
+        <span><strong>Rs.<%= total.toFixed(2) %></strong></span>
+      </div>
+      <% } %>
+    </div>
+
+    <div class="user-details-form">
+      <h2>Your Details</h2>
+      <form action="/order/place" method="POST">
+        <div class="form-group">
+          <label for="name">Full Name:</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number:</label>
+          <input type="tel" id="phone" name="phone" required />
+        </div>
+        <div class="form-group">
+          <label for="address">Delivery Address:</label>
+          <textarea id="address" name="address" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="place-order-btn">
+          Pay Later with Cash
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    background: #f6f6f6;
+  }
+  .checkout-page-wrapper {
+    max-width: 1000px;
+    margin: 40px auto 0 auto;
+    padding: 0 25px;
+    box-sizing: border-box;
+  }
+  .page-title, h1 {
+    font-size: 2.6em;
+    font-weight: 700;
+    color: #181818;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+  .checkout-container {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+  }
+  .cart-summary-checkout, .user-details-form {
+    flex: 1;
+    min-width: 320px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 32px 36px;
+    background-color: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+  }
+  .cart-summary-checkout h2, .user-details-form h2 {
+    font-size: 2em;
+    font-weight: 700;
+    color: #181818;
+    margin-bottom: 18px;
+    text-align: left;
+  }
+  .cart-summary-checkout ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 18px 0;
+  }
+  .cart-summary-checkout ul li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #222;
+    font-weight: 600;
+  }
+  .cart-summary-checkout .product-name {
+    font-weight: 700;
+    color: #181818;
+  }
+  .total-price-checkout {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.4em;
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 2px solid #ddd;
+    font-weight: 700;
+    color: #181818;
+  }
+  .user-details-form label {
+    display: block;
+    margin-top: 1.2rem;
+    font-weight: 600;
+    color: #222;
+    font-size: 1.1em;
+  }
+  .user-details-form input,
+  .user-details-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    background: #f6f6f6;
+    color: #222;
+    box-sizing: border-box;
+    margin-bottom: 0.5rem;
+  }
+  .user-details-form textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+  .user-details-form button[type="submit"] {
+    display: block;
+    width: 100%;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    padding: 16px 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 22px;
+    transition: background 0.2s;
+    box-shadow: none;
+  }
+  .user-details-form button[type="submit"]:hover {
+    background: #222;
+  }
+  @media (max-width: 900px) {
+    .checkout-container {
+      flex-direction: column;
+      gap: 24px;
+    }
+    .cart-summary-checkout, .user-details-form {
+      max-width: 100%;
+      margin: 0 0 24px 0;
+      padding: 24px 12px;
+    }
+  }
+  @media (max-width: 600px) {
+    .checkout-page-wrapper {
+      padding: 0 5px;
+    }
+    .cart-summary-checkout, .user-details-form {
+      padding: 16px 4px;
+    }
+    .page-title, h1 {
+      font-size: 2em;
+    }
+  }
+  .order-summary-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #f6f6f6;
+    border: 1px solid #eee;
+  }
+</style>

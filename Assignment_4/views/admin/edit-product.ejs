@@ -1,0 +1,39 @@
+<% /* views/admin/edit-product.ejs */ %>
+<% title = 'Edit Product' %>
+<% headerText = 'Edit Product' %>
+<% activePage = 'products' %>
+
+<div class="admin-section">
+    <form action="/admin/products/edit/<%= product._id %>" method="POST">
+        <div class="form-group">
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name" class="form-control" value="<%= product.name %>" required>
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">Image URL:</label>
+            <input type="text" id="imageUrl" name="imageUrl" class="form-control" value="<%= product.imageUrl %>" required>
+        </div>
+        <div class="form-group">
+            <label for="originalPrice">Original Price (e.g., Rs.50,000.00):</label>
+            <input type="text" id="originalPrice" name="originalPrice" class="form-control" value="<%= product.originalPrice || '' %>">
+        </div>
+        <div class="form-group">
+            <label for="discountedPrice">Discounted Price (e.g., Rs.35,000.00):</label>
+            <input type="text" id="discountedPrice" name="discountedPrice" class="form-control" value="<%= product.discountedPrice %>" required>
+        </div>
+        <div class="form-group">
+            <label for="status">Status (e.g., New Lines Added, Sale):</label>
+            <input type="text" id="status" name="status" class="form-control" value="<%= product.status || '' %>">
+        </div>
+        <div class="form-group">
+            <label for="colors">Colors (comma-separated, e.g., #FF0000,blue,black):</label>
+            <input type="text" id="colors" name="colors" class="form-control" value="<%= product.colors ? product.colors.join(', ') : '' %>">
+        </div>
+        <div class="form-group"> <% /* NEW: Quantity Input */ %>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" class="form-control" min="0" value="<%= product.quantity %>" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Product</button>
+        <a href="/admin/products" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

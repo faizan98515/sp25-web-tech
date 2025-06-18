@@ -1,0 +1,570 @@
+<% /*
+    products.ejs
+    Updated product card links to point to product detail page.
+    Flash Messages Display block should already be updated as per previous instructions.
+*/ %>
+
+<div class="sale-page-wrapper">
+    <div class="breadcrumb">
+        <span>Men's</span> &gt; <span>Men's Sale</span>
+    </div>
+
+    <h1 class="page-title">Products</h1> <% /* Changed title from Men's Sale to Products */ %>
+
+    <% /* Flash Messages Display */ %>
+    <% if (success_msg && success_msg.length > 0) { %>
+        <!-- Flash message container removed -->
+    <% } %>
+    <% if (error_msg && error_msg.length > 0) { %>
+        <!-- Flash message container removed -->
+    <% } %>
+
+    <div class="filter-toggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sliders-horizontal">
+            <line x1="21" x2="14" y1="4" y2="4"/>
+            <line x1="10" x2="3" y1="4" y2="4"/>
+            <line x1="21" x2="12" y1="12" y2="12"/>
+            <line x1="8" y1="10" x2="8" y2="14"/>
+            <line x1="16" y1="18" x2="16" y2="22"/>
+        </svg>
+        <span>Hide Filters</span>
+    </div>
+
+    <div class="main-content">
+        <aside class="sidebar-filters">
+            <% /* Filter Sections (unchanged) */ %>
+            <div class="filter-section">
+                <div class="filter-header">Sort by <span class="arrow">↓</span></div>
+                <div class="filter-options">
+                    <ul>
+                        <li><a href="#">Newest</a></li>
+                        <li><a href="#">Price: Low to High</a></li>
+                        <li><a href="#">Price: High to Low</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="filter-header">Size <span class="arrow">↓</span></div>
+                <div class="filter-options">
+                    <label><input type="checkbox" name="size" value="xs"> XS</label><br>
+                    <label><input type="checkbox" name="size" value="s"> S</label><br>
+                    <label><input type="checkbox" name="size" value="m"> M</label><br>
+                    <label><input type="checkbox" name="size" value="l"> L</label><br>
+                    <label><input type="checkbox" name="size" value="xl"> XL</label>
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="filter-header">Material <span class="arrow">↓</span></div>
+                <div class="filter-options">
+                    <label><input type="checkbox" name="material" value="cotton"> Cotton</label><br>
+                    <label><input type="checkbox" name="material" value="wool"> Wool</label><br>
+                    <label><input type="checkbox" name="material" value="polyester"> Polyester</label>
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="filter-header">Category <span class="arrow">↓</span></div>
+                <div class="filter-options">
+                    <label><input type="checkbox" name="category" value="t-shirts"> T-Shirts</label><br>
+                    <label><input type="checkbox" name="category" value="hoodies"> Hoodies</label><br>
+                    <label><input type="checkbox" name="category" value="pants"> Pants</label>
+                </div>
+            </div>
+             <div class="filter-section">
+                <div class="filter-header">Colour <span class="arrow">↓</span></div>
+                <div class="filter-options">
+                    <div class="filter-color-options">
+                        <span class="color-option" style="background-color: black;" title="Black"></span>
+                        <span class="color-option" style="background-color: grey;" title="Grey"></span>
+                        <span class="color-option" style="background-color: brown;" title="Brown"></span>
+                        <span class="color-option" style="background-color: green;" title="Green"></span>
+                        <span class="color-option" style="background-color: blue;" title="Blue"></span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <section class="product-listing">
+            <div class="results-bar">
+                <div class="sort-by-mobile">Sort by <span class="arrow">↓</span></div>
+                <div class="item-count"><%= products.length %> Items Found</div>
+                <a href="/cart" class="view-cart-link">View Cart (<%= Object.keys(cart).length %> items)</a>
+            </div>
+
+            <div class="product-grid">
+                <% products.forEach(product => { %>
+                    <div class="product-card">
+                        <% /* NEW: Link entire product card area to product detail page */ %>
+                        <a href="/products/<%= product._id %>" class="product-link">
+                            <div class="product-image-container">
+                                <img src="<%= product.imageUrl %>" alt="<%= product.name %>">
+                            </div>
+                            <h3 class="product-name"><%= product.name %></h3>
+                            <p class="product-price">
+                                <% if (product.originalPrice) { %>
+                                    <span class="original-price"><%= product.originalPrice %></span>
+                                <% } %>
+                                <span class="discounted-price"><%= product.discountedPrice %></span>
+                            </p>
+                        </a>
+                        <div class="product-colors">
+                            <% if (product.colors && product.colors.length > 0) { %>
+                                <% product.colors.forEach(color => { %>
+                                    <span class="color-swatch" style="background-color: <%= color %>;"></span>
+                                <% }); %>
+                            <% } %>
+                        </div>
+                        <% /* ADD TO CART FORM (Still here for quick add, but link now goes to detail) */ %>
+                        <form action="/cart/add" method="POST" class="add-to-cart-form">
+                            <input type="hidden" name="productId" value="<%= product._id %>">
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="redirectBack" value="/products"> <% /* Indicate where to redirect after add */ %>
+                            <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                        </form>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+    </div>
+</div>
+
+<style>
+  /*
+    * CSS for the Men's Sale Page Content
+    * Integrate this into your main CSS file or include it in a <style> block
+    * within your layout.ejs or this EJS file, depending on your setup.
+    */
+
+  /* Basic styling for consistency, adjust to your site's theme */
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif; /* Example font */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+  }
+
+  /* Container for the entire page content */
+  .sale-page-wrapper {
+    max-width: 1280px; /* Adjust max-width as per your overall layout */
+    margin: 20px auto; /* Center the content */
+    padding: 0 25px; /* Padding on sides */
+    box-sizing: border-box;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  /* Breadcrumb styling */
+  .breadcrumb {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+
+  .breadcrumb span {
+    color: #333;
+    font-weight: normal;
+  }
+
+  .breadcrumb span:last-child {
+    font-weight: bold; /* Make the current page bold */
+  }
+
+  /* Page Title */
+  .page-title {
+    font-size: 2.8em;
+    margin-bottom: 20px;
+    color: #181818;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  /* Hide Filters Toggle */
+  .filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 1.1em;
+  }
+
+  .filter-toggle svg {
+    width: 22px;
+    height: 22px;
+    stroke: #333; /* Color of the SVG icon */
+  }
+
+  /* Main Content Area: Sidebar + Product Listing */
+  .main-content {
+    display: flex;
+    gap: 40px; /* Space between sidebar and product listing */
+    align-items: flex-start; /* Align items to the top */
+  }
+
+  /* Sidebar Filters */
+  .sidebar-filters {
+    flex: 0 0 280px; /* Fixed width for the sidebar */
+    padding-right: 40px;
+    border-right: 1px solid #eee; /* Light separator line */
+  }
+
+  .filter-section {
+    margin-bottom: 25px;
+  }
+
+  .filter-header {
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+    color: #333;
+  }
+
+  .filter-header .arrow {
+    font-size: 1.2em;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  /* For collapsed/expanded state (requires JS to toggle a class like 'active') */
+  /* .filter-header.active .arrow { transform: rotate(180deg); } */
+
+  .filter-options {
+    padding-top: 15px;
+    font-size: 0.95em;
+    color: #555;
+    /* Uncomment below if you want to hide by default and show with JS */
+    /* display: none; */
+  }
+
+  .filter-options ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .filter-options ul li {
+    margin-bottom: 8px;
+  }
+
+  .filter-options ul li a {
+    text-decoration: none;
+    color: #555;
+    display: block;
+    padding: 3px 0;
+  }
+
+  .filter-options ul li a:hover {
+    color: #000;
+  }
+
+  .filter-options label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+
+  .filter-options input[type="checkbox"] {
+    margin-right: 8px;
+  }
+
+  .filter-color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .color-option {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: inline-block; /* For better click area and spacing */
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  }
+
+  .color-option:hover {
+    transform: scale(1.1);
+    border-color: #333;
+  }
+
+  /* Product Listing Area */
+  .product-listing {
+    flex-grow: 1; /* Takes up the remaining space */
+  }
+
+  .results-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .sort-by-mobile {
+    display: none; /* Hidden on desktop, shown on smaller screens if needed */
+    font-weight: bold;
+    color: #333;
+  }
+
+  .item-count {
+    font-size: 0.95em;
+    color: #555;
+  }
+
+  /* Product Grid Styling */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for desktop */
+    gap: 30px; /* Gap between product cards */
+  }
+
+  .product-card {
+    border: 1px solid #eee; /* Subtle border for each card */
+    text-align: left;
+    background-color: #f6f6f6;
+    transition: box-shadow 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column; /* Stack image, name, price, colors, button */
+    justify-content: space-between; /* Pushes content to top/bottom */
+    position: relative;
+  }
+
+  .product-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Slight shadow on hover */
+  }
+
+  .product-card .product-link {
+    /* Styling for the link wrapping image/name/price */
+    text-decoration: none;
+    color: inherit; /* Inherit text color from parent */
+    display: block; /* Make this part of the card clickable */
+    flex-grow: 1; /* Allows it to take up available space before button */
+  }
+
+  .product-image-container {
+    position: relative;
+    overflow: hidden; /* Ensures label stays within bounds */
+  }
+
+  .product-card img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Removes extra space below image */
+    margin-bottom: 10px;
+  }
+
+  .product-name {
+    font-size: 1.15em;
+    font-weight: 500;
+    margin: 10px 15px 5px; /* Adjust margins as needed */
+    color: #333;
+  }
+
+  .product-price {
+    font-weight: bold;
+    color: #333;
+    margin: 0 15px; /* Align with product name */
+    font-size: 1.05em;
+  }
+
+  .original-price {
+    text-decoration: line-through;
+    color: #888;
+    font-weight: normal;
+    margin-right: 8px;
+  }
+
+  .discounted-price {
+    color: #e00; /* Red for discounted price */
+  }
+
+  .product-colors {
+    display: flex;
+    gap: 5px;
+    margin: 10px 15px 15px; /* Adjust spacing */
+  }
+
+  .color-swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .color-swatch:hover {
+    transform: scale(1.1);
+  }
+
+  .add-to-cart-btn {
+    background-color: #000; /* Black button */
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    width: calc(100% - 30px); /* Adjust for padding on sides of card */
+    margin: 0 15px 15px; /* Bottom margin to separate from content */
+    transition: background-color 0.3s ease;
+  }
+
+  .add-to-cart-btn:hover {
+    background-color: #333; /* Darker on hover */
+  }
+
+  /* --- Responsive Adjustments --- */
+  @media (max-width: 1200px) {
+    .sale-page-wrapper {
+      padding: 0 20px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+      gap: 25px;
+    }
+    .sidebar-filters {
+      flex: 0 0 220px; /* Slightly smaller sidebar */
+      padding-right: 25px;
+    }
+    .main-content {
+      gap: 30px;
+    }
+    .page-title {
+      font-size: 2.4em;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .main-content {
+      flex-direction: column; /* Stack sidebar and product list */
+      gap: 20px;
+    }
+
+    .sidebar-filters {
+      flex: none; /* Remove fixed width */
+      width: 100%;
+      border-right: none;
+      padding-right: 0;
+      border-bottom: 1px solid #eee; /* Add a bottom border as separator */
+      padding-bottom: 20px;
+    }
+
+    .filter-toggle {
+      justify-content: flex-start; /* Adjust alignment as desired */
+      margin-bottom: 15px;
+      /* You might want to hide this if filter sections become collapsable with JS */
+    }
+
+    .results-bar {
+      flex-direction: column; /* Stack sort and count */
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+
+    .sort-by-mobile {
+      display: block; /* Show a sort option for mobile */
+      margin-bottom: 10px;
+    }
+
+    .item-count {
+      width: 100%; /* Take full width */
+      text-align: left;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(
+        2,
+        1fr
+      ); /* Still 2 columns for tablets/smaller desktops */
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .sale-page-wrapper {
+      padding: 0 15px;
+    }
+    .page-title {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    .product-grid {
+      grid-template-columns: 1fr; /* Single column on very small screens */
+      gap: 15px;
+    }
+    .product-card .product-link {
+      padding-bottom: 10px;
+    }
+    .product-name,
+    .product-price,
+    .product-colors,
+    .add-to-cart-btn {
+      margin-left: 10px;
+      margin-right: 10px;
+      font-size: 1em;
+    }
+    .product-name {
+      font-size: 1.05em;
+    }
+    .add-to-cart-btn {
+      padding: 10px 15px;
+      width: calc(100% - 20px);
+      font-size: 0.95em;
+    }
+  }
+
+  .flash-messages {
+    margin: 20px auto;
+    max-width: 1280px;
+    padding: 0 25px;
+  }
+  .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  .alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  /* Styles for the "View Cart" link */
+  .view-cart-link {
+    text-decoration: none;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 0;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+    border: none;
+    font-weight: 500;
+    box-shadow: none;
+  }
+
+  .view-cart-link:hover {
+    background-color: #222;
+    color: #fff;
+  }
+</style>
